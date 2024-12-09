@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Macro Tracker</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="bg-gray-100 p-5">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <h2 class="text-xl font-semibold mb-4">Add Food Entry</h2>
+                <form id="macroForm" class="space-y-4">
+                    <div>
+                        <label for="foodName" class="block font-medium mb-1"
+                            >Food Name (optional)</label
+                        >
+                        <input
+                            type="text"
+                            id="foodName"
+                            placeholder="Enter food name"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+                    <div>
+                        <label for="protein" class="block font-medium mb-1"
+                            >Protein (g)</label
+                        >
+                        <input
+                            type="number"
+                            id="protein"
+                            required
+                            min="0"
+                            step="0.1"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+                    <div>
+                        <label for="carbs" class="block font-medium mb-1"
+                            >Carbs (g)</label
+                        >
+                        <input
+                            type="number"
+                            id="carbs"
+                            required
+                            min="0"
+                            step="0.1"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+                    <div>
+                        <label for="fat" class="block font-medium mb-1"
+                            >Fat (g)</label
+                        >
+                        <input
+                            type="number"
+                            id="fat"
+                            required
+                            min="0"
+                            step="0.1"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                    >
+                        Add Entry
+                    </button>
+                </form>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <h2 class="text-xl font-semibold mb-4">Daily Summary</h2>
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+                >
+                    <div class="bg-gray-50 p-4 rounded-md text-center">
+                        <div class="text-gray-600">Total Calories</div>
+                        <div class="text-2xl font-bold my-1" id="totalCalories">
+                            0
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-md text-center">
+                        <div class="text-gray-600">Protein (g)</div>
+                        <div class="text-2xl font-bold my-1" id="totalProtein">
+                            0
+                        </div>
+                        <div class="text-sm text-gray-500" id="proteinCalories">
+                            0 kcal
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-md text-center">
+                        <div class="text-gray-600">Carbs (g)</div>
+                        <div class="text-2xl font-bold my-1" id="totalCarbs">
+                            0
+                        </div>
+                        <div class="text-sm text-gray-500" id="carbsCalories">
+                            0 kcal
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-md text-center">
+                        <div class="text-gray-600">Fat (g)</div>
+                        <div class="text-2xl font-bold my-1" id="totalFat">
+                            0
+                        </div>
+                        <div class="text-sm text-gray-500" id="fatCalories">
+                            0 kcal
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold">Food Entries</h2>
+                    <button
+                        onclick="copyTableToMarkdown()"
+                        class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors flex items-center gap-2"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-5 w-5"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                        >
+                            <path
+                                d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"
+                            />
+                            <path
+                                d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"
+                            />
+                        </svg>
+                        Copy as Markdown
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="px-4 py-3 text-left">Food</th>
+                                <th class="px-4 py-3 text-left">Protein</th>
+                                <th class="px-4 py-3 text-left">Carbs</th>
+                                <th class="px-4 py-3 text-left">Fat</th>
+                                <th class="px-4 py-3 text-left">Calories</th>
+                                <th class="px-4 py-3 text-left">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="entriesList"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Constants for calorie calculations
+            const PROTEIN_CAL_PER_GRAM = 4;
+            const CARBS_CAL_PER_GRAM = 4;
+            const FAT_CAL_PER_GRAM = 9;
+
+            // Initialize entries from localStorage or empty array
+            let entries =
+                JSON.parse(localStorage.getItem("macroEntries")) || [];
+
+            // Form submission handler
+            document
+                .getElementById("macroForm")
+                .addEventListener("submit", function (e) {
+                    e.preventDefault();
+
+                    const entry = {
+                        id: Date.now(),
+                        foodName:
+                            document.getElementById("foodName").value ||
+                            "Unnamed Food",
+                        protein: parseFloat(
+                            document.getElementById("protein").value
+                        ),
+                        carbs: parseFloat(
+                            document.getElementById("carbs").value
+                        ),
+                        fat: parseFloat(document.getElementById("fat").value),
+                    };
+
+                    entries.push(entry);
+                    localStorage.setItem(
+                        "macroEntries",
+                        JSON.stringify(entries)
+                    );
+
+                    updateDisplay();
+                    this.reset();
+                });
+
+            function calculateCalories(protein, carbs, fat) {
+                return (
+                    protein * PROTEIN_CAL_PER_GRAM +
+                    carbs * CARBS_CAL_PER_GRAM +
+                    fat * FAT_CAL_PER_GRAM
+                );
+            }
+
+            function deleteEntry(id) {
+                entries = entries.filter((entry) => entry.id !== id);
+                localStorage.setItem("macroEntries", JSON.stringify(entries));
+                updateDisplay();
+            }
+
+            function copyTableToMarkdown() {
+                // Create markdown table header
+                let markdown = "| Food | Protein | Carbs | Fat | Calories |\n";
+                markdown += "|------|---------|-------|-----|----------|\n";
+
+                // Add each entry to the markdown table
+                entries.forEach((entry) => {
+                    const calories = calculateCalories(
+                        entry.protein,
+                        entry.carbs,
+                        entry.fat
+                    );
+                    markdown += `| ${entry.foodName} | ${entry.protein}g | ${
+                        entry.carbs
+                    }g | ${entry.fat}g | ${calories.toFixed(0)} kcal |\n`;
+                });
+
+                // Add daily totals
+                const totals = entries.reduce(
+                    (acc, entry) => {
+                        acc.protein += entry.protein;
+                        acc.carbs += entry.carbs;
+                        acc.fat += entry.fat;
+                        return acc;
+                    },
+                    { protein: 0, carbs: 0, fat: 0 }
+                );
+
+                const totalCalories = calculateCalories(
+                    totals.protein,
+                    totals.carbs,
+                    totals.fat
+                );
+                markdown += "\n**Daily Totals**\n";
+                markdown += `- Total Calories: ${totalCalories.toFixed(
+                    0
+                )} kcal\n`;
+                markdown += `- Total Protein: ${totals.protein.toFixed(1)}g\n`;
+                markdown += `- Total Carbs: ${totals.carbs.toFixed(1)}g\n`;
+                markdown += `- Total Fat: ${totals.fat.toFixed(1)}g\n`;
+
+                // Copy to clipboard
+                navigator.clipboard
+                    .writeText(markdown)
+                    .then(() => {
+                        alert("Table copied to clipboard as Markdown!");
+                    })
+                    .catch((err) => {
+                        console.error("Failed to copy table:", err);
+                        alert("Failed to copy table to clipboard");
+                    });
+            }
+
+            function updateDisplay() {
+                // Calculate totals
+                const totals = entries.reduce(
+                    (acc, entry) => {
+                        acc.protein += entry.protein;
+                        acc.carbs += entry.carbs;
+                        acc.fat += entry.fat;
+                        return acc;
+                    },
+                    { protein: 0, carbs: 0, fat: 0 }
+                );
+
+                // Update summary displays
+                document.getElementById("totalProtein").textContent =
+                    totals.protein.toFixed(1);
+                document.getElementById("totalCarbs").textContent =
+                    totals.carbs.toFixed(1);
+                document.getElementById("totalFat").textContent =
+                    totals.fat.toFixed(1);
+
+                const proteinCals = totals.protein * PROTEIN_CAL_PER_GRAM;
+                const carbsCals = totals.carbs * CARBS_CAL_PER_GRAM;
+                const fatCals = totals.fat * FAT_CAL_PER_GRAM;
+                const totalCals = proteinCals + carbsCals + fatCals;
+
+                document.getElementById(
+                    "proteinCalories"
+                ).textContent = `${proteinCals.toFixed(0)} kcal`;
+                document.getElementById(
+                    "carbsCalories"
+                ).textContent = `${carbsCals.toFixed(0)} kcal`;
+                document.getElementById(
+                    "fatCalories"
+                ).textContent = `${fatCals.toFixed(0)} kcal`;
+                document.getElementById("totalCalories").textContent =
+                    totalCals.toFixed(0);
+
+                // Update entries table
+                const entriesList = document.getElementById("entriesList");
+                entriesList.innerHTML = entries
+                    .map(
+                        (entry) => `
+                        <tr class="border-t border-gray-100">
+                            <td class="px-4 py-3">${entry.foodName}</td>
+                            <td class="px-4 py-3">${entry.protein}g</td>
+                            <td class="px-4 py-3">${entry.carbs}g</td>
+                            <td class="px-4 py-3">${entry.fat}g</td>
+                            <td class="px-4 py-3">${calculateCalories(
+                                entry.protein,
+                                entry.carbs,
+                                entry.fat
+                            ).toFixed(0)} kcal</td>
+                            <td class="px-4 py-3">
+                                <button 
+                                    onclick="deleteEntry(${entry.id})"
+                                    class="bg-red-600 text-white px-3 py-1 text-sm rounded hover:bg-red-700 transition-colors"
+                                >
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    `
+                    )
+                    .join("");
+            }
+
+            // Initial display update
+            updateDisplay();
+        </script>
+    </body>
+</html>
